@@ -1,0 +1,80 @@
+name: Build launchers
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        shell: bash
+        run: |
+          yes | sdkmanager --licenses > /dev/null 2>&1 || true
+          sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+          if sdkmanager --list | grep -q "platforms;android-37"; then
+            sdkmanager "platforms;android-37" "build-tools;37.0.0"
+          else
+            echo "::warning::SDK platform 37 not available, falling back to 36"
+            sed -i 's/compileSdk = 37/compileSdk = 36/' app/build.gradle.kts
+          fi
+
+      - name: Build release APK
+        shell: bash
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon --stacktrace
+
+      - name: Collect APKs
+        shell: bash
+        run: |
+          mkdir -p out
+          cp app/build/outputs/apk/release/*.apk out/ 2>/dev/null || true
+          cp prebuilt/*.apk out/ 2>/dev/null || true
+          ls -lh out
+          test -n "$(ls -A out)" || { echo "No APK produced"; exit 1; }
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: launchers-apk
+          path: out/*.apk
+          if-no-files-found: error
+
+      - name: Publish Release
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Launchers build ${{ github.run_number }}
+          body: |
+            Собрано автоматически через GitHub Actions.
+
+            - `app-release.apk` — лаунчер из исходников (Expressive Launcher, MIT)
+            - `ColorOS17Launcher-5.0-parallel-close-1.apk` — готовый APK ColorOS 17
+
+            Кредиты: см. CREDITS.md
+          files: out/*.apk
+          generate_release_notes: true
+          fail_on_unmatched_files: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
