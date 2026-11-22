@@ -8,13 +8,12 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.expressivelauncher"
+        // Своё имя пакета: ставится рядом с любыми предыдущими версиями, не конфликтует подписью
+        applicationId = "com.mylauncher.coloros"
         minSdk = 27
         targetSdk = 36
-        // versionCode обязательно расти: иначе часть установщиков не ставит APK поверх уже
-        // установленной версии и пишет «Приложение не установлено»
-        versionCode = 3
-        versionName = "1.2"
+        versionCode = 4
+        versionName = "1.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
