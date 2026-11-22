@@ -7,6 +7,13 @@ android {
     namespace = "com.example.expressivelauncher"
     compileSdk = 36
 
+    // Material3 1.5.0-beta02 и material-ripple 1.12.0 объявляют minCompileSdk 37,
+    // но стабильного пакета platforms;android-37 в SDK-менеджере нет (только 37.0/37.1/37.2).
+    // Проверку метаданных отключаем, чтобы собраться на стабильной платформе 36.
+    aarMetadata {
+        checkMinCompileSdk = false
+    }
+
     defaultConfig {
         applicationId = "com.example.expressivelauncher"
         minSdk = 27
