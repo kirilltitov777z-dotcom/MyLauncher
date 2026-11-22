@@ -39,7 +39,7 @@ class LockScreenActivity : ComponentActivity() {
         val ok = runCatching {
             if (capture.resolveActivity(packageManager) != null) camera.launch(capture)
             else if (still.resolveActivity(packageManager) != null) startActivity(still)
-            else startActivity(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_CAMERA))
+            else error("no camera app")
         }.isSuccess
         if (!ok) Toast.makeText(this, "Камера недоступна", Toast.LENGTH_SHORT).show()
     }

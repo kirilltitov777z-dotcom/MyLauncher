@@ -469,7 +469,7 @@
     <string name="lock_enabled">Custom lock screen</string>
     <string name="lock_enabled_hint">ColorOS-style lock screen with a clock and a fake fingerprint</string>
     <string name="lock_after_system">Show after system unlock</string>
-    <string name="lock_after_system_hint">First your phone's own lock screen, then this one</string>
+    <string name="lock_after_system_hint">First your phone\'s own lock screen, then this one</string>
     <string name="lock_preview">Preview lock screen</string>
     <string name="lock_preview_hint">Open it now to try the clock and fingerprint</string>
     <string name="lock_clock">Clock</string>

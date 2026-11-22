@@ -3,6 +3,7 @@ package com.example.expressivelauncher.ui.lockscreen
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
@@ -18,7 +19,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.matchParentSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -208,7 +208,7 @@ private fun Fingerprint(accent: Color, onCamera: () -> Unit, modifier: Modifier 
     val pulse by infinite.animateFloat(
         initialValue = 1f,
         targetValue = 1.07f,
-        animationSpec = infiniteRepeatable(tween(1700, easing = FastOutSlowInEasing), RepeatMode.Reverse),
+        animationSpec = infiniteRepeatable<Float>(tween(1700, easing = FastOutSlowInEasing), RepeatMode.Reverse),
         label = "pulse",
     )
     var scanning by remember { mutableStateOf(false) }
@@ -252,7 +252,7 @@ private fun Fingerprint(accent: Color, onCamera: () -> Unit, modifier: Modifier 
                 drawCircle(color = accent, radius = 3.dp.toPx(), center = c)
             }
             if (scanning) {
-                Box(Modifier.matchParentSize().clip(CircleShape).background(accent.copy(alpha = 0.18f)))
+                Box(Modifier.fillMaxSize().clip(CircleShape).background(accent.copy(alpha = 0.18f)))
             }
         }
         Spacer(Modifier.height(6.dp))
