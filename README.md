@@ -36,7 +36,7 @@ Workflow собирает `assembleRelease`. Подпись — уже наст�
 
 ### Локально
 
-Нужны JDK 17 и Android SDK (платформы 36/37).
+Нужны JDK 17 и Android SDK (платформа 36).
 
 ```sh
 ./gradlew assembleRelease

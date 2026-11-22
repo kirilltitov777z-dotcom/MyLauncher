@@ -34,12 +34,6 @@ jobs:
         run: |
           yes | sdkmanager --licenses > /dev/null 2>&1 || true
           sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
-          if sdkmanager --list | grep -q "platforms;android-37"; then
-            sdkmanager "platforms;android-37" "build-tools;37.0.0"
-          else
-            echo "::warning::SDK platform 37 not available, falling back to 36"
-            sed -i 's/compileSdk = 37/compileSdk = 36/' app/build.gradle.kts
-          fi
 
       - name: Build release APK
         shell: bash
