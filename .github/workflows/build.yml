@@ -25,6 +25,9 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          # пакет `tools` удалён из репозитория SDK — ставим только platform-tools
+          packages: "platform-tools"
 
       - name: Install Android SDK packages
         shell: bash
